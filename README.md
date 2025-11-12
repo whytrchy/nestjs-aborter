@@ -9,7 +9,7 @@
 [![npm version](https://img.shields.io/npm/v/nestjs-aborter.svg)](https://www.npmjs.com/package/nestjs-aborter)
 [![npm downloads](https://img.shields.io/npm/dm/nestjs-aborter.svg)](https://www.npmjs.com/package/nestjs-aborter)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/whytrchy/nestjs-aborter/ci.yml?branch=main)](https://github.com/whytrchy/nestjs-aborter/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/whytrchy/nestjs-aborter/release.yml?branch=main)](https://github.com/whytrchy/nestjs-aborter/actions)
 [![Release](https://github.com/whytrchy/nestjs-aborter/actions/workflows/release.yml/badge.svg)](https://github.com/whytrchy/nestjs-aborter/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/whytrchy/nestjs-aborter/branch/main/graph/badge.svg)](https://codecov.io/gh/whytrchy/nestjs-aborter)
 [![semantic-release: conventionalcommits](https://img.shields.io/badge/semantic--release-conventionalcommits-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
