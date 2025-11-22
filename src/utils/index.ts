@@ -28,76 +28,77 @@ export function withAbort<T>(
   signal?: AbortSignal,
   options?: WithAbortOptions,
 ): Promise<T> {
-  if (options?.timeout && signal?._requestTimeout) {
-    if (options.timeout > signal._requestTimeout) {
-      throw new Error(
-        `Operation timeout (${options.timeout}ms) cannot exceed request timeout (${signal._requestTimeout}ms). ` +
-          `Use @RequestTimeout(${options.timeout}) decorator to increase the request timeout.`,
-      );
-    }
-  }
-
-  if (!signal && !options?.timeout) {
-    return promise;
-  }
-
+  // Early returns for simple cases
+  if (!signal && !options?.timeout) return promise;
   if (signal?.aborted) {
     return Promise.reject(
       new AbortError(signal.reason ? String(signal.reason) : undefined),
     );
   }
 
-  return new Promise<T>((resolve, reject) => {
-    let timeoutId: NodeJS.Timeout | undefined;
-    let abortController: AbortController | undefined;
+  validateTimeouts(signal, options);
 
-    const cleanup = () => {
-      if (timeoutId !== undefined) {
-        clearTimeout(timeoutId);
-        timeoutId = undefined;
-      }
-      if (abortController) {
-        abortController.abort();
-        abortController = undefined;
-      }
-    };
+  const promises: Promise<T>[] = [promise];
 
-    if (signal || options?.timeout) {
-      abortController = new AbortController();
-      const internalSignal = abortController.signal;
+  if (signal) {
+    promises.push(createAbortPromise<T>(signal));
+  }
 
-      if (signal) {
-        signal.addEventListener(
-          'abort',
-          () => {
-            cleanup();
-            reject(
-              new AbortError(signal.reason ? String(signal.reason) : undefined),
-            );
-          },
-          { once: true, signal: internalSignal },
-        );
-      }
+  if (options?.timeout) {
+    promises.push(createTimeoutPromise<T>(options));
+  }
 
-      if (options?.timeout) {
-        timeoutId = setTimeout(() => {
-          cleanup();
-          const message =
-            options.timeoutMessage ||
-            `Operation timed out after ${options.timeout}ms`;
-          reject(new AbortError(message));
-        }, options.timeout);
-      }
-    }
+  return Promise.race(promises);
+}
 
-    promise
-      .then((result) => {
-        cleanup();
-        resolve(result);
-      })
-      .catch((error: unknown) => {
-        cleanup();
-        reject(error instanceof Error ? error : new Error(String(error)));
-      });
+/**
+ * Validates that operation timeout doesn't exceed request timeout
+ */
+function validateTimeouts(
+  signal: AbortSignal | undefined,
+  options: WithAbortOptions | undefined,
+): void {
+  if (!options?.timeout || !signal?._requestTimeout) {
+    return;
+  }
+
+  const { timeout } = options;
+  const requestTimeout = signal._requestTimeout;
+
+  if (timeout > requestTimeout) {
+    throw new Error(
+      `Operation timeout (${timeout}ms) cannot exceed request timeout (${requestTimeout}ms). ` +
+        `Use @RequestTimeout(${timeout}) decorator to increase the request timeout.`,
+    );
+  }
+}
+
+/**
+ * Creates a promise that rejects when the signal is aborted
+ */
+function createAbortPromise<T>(signal: AbortSignal): Promise<T> {
+  return new Promise<T>((_, reject) => {
+    signal.addEventListener(
+      'abort',
+      () =>
+        reject(
+          new AbortError(signal.reason ? String(signal.reason) : undefined),
+        ),
+      { once: true },
+    );
+  });
+}
+
+/**
+ * Creates a promise that rejects after a timeout
+ */
+function createTimeoutPromise<T>(options: WithAbortOptions): Promise<T> {
+  return new Promise<T>((_, reject) => {
+    setTimeout(() => {
+      const message =
+        options.timeoutMessage ||
+        `Operation timed out after ${options.timeout}ms`;
+      reject(new AbortError(message));
+    }, options.timeout);
   });
 }

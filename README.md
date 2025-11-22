@@ -12,7 +12,9 @@
 [![Build Status](https://img.shields.io/github/actions/workflow/status/whytrchy/nestjs-aborter/release.yml?branch=main)](https://github.com/whytrchy/nestjs-aborter/actions)
 [![Release](https://github.com/whytrchy/nestjs-aborter/actions/workflows/release.yml/badge.svg)](https://github.com/whytrchy/nestjs-aborter/actions/workflows/release.yml)
 [![codecov](https://codecov.io/gh/whytrchy/nestjs-aborter/branch/main/graph/badge.svg)](https://codecov.io/gh/whytrchy/nestjs-aborter)
+[![Maintainability](https://qlty.sh/gh/whytrchy/projects/nestjs-aborter/maintainability.svg)](https://qlty.sh/gh/whytrchy/projects/nestjs-aborter)
 [![semantic-release: conventionalcommits](https://img.shields.io/badge/semantic--release-conventionalcommits-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+[![Known Vulnerabilities](https://snyk.io/test/github/whytrchy/nestjs-aborter/badge.svg)](https://snyk.io/test/github/whytrchy/nestjs-aborter)
 
 Stop wasting resources on abandoned requests. Automatically cancel operations when clients disconnect or requests timeout.
 
