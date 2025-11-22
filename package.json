@@ -1,6 +1,6 @@
 {
   "name": "nestjs-aborter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automatic request cancellation and timeout handling for NestJS applications",
   "author": "Wahyu Tricahyo <wahyutrchy@gmail.com>",
   "private": false,

@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/whytrchy/nestjs-aborter/compare/v1.0.0...v1.0.1) (2025-11-22)
+
+
+### Bug Fixes
+
+* improve error handling and reduce package size ([d7a55ff](https://github.com/whytrchy/nestjs-aborter/commit/d7a55ff591529c7a27a29ccf110b44dc8c6e3cef))
+
 # 1.0.0 (2025-11-12)
 
 
